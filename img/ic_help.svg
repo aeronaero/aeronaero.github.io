@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>ic_help</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Main_vars_2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Aeron_full_desctop_var" transform="translate(-620.000000, -555.000000)" fill="#F6C262">
+            <g id="Group-5" transform="translate(620.000000, 554.000000)">
+                <path d="M9,19 C4.02943725,19 0,14.9705627 0,10 C0,5.02943725 4.02943725,1 9,1 C13.9705627,1 18,5.02943725 18,10 C18,14.9705627 13.9705627,19 9,19 Z M6,8.584 L8.408,8.584 C8.408,7.828 8.646,7.478 9.164,7.478 C9.584,7.478 9.78,7.66 9.78,8.066 C9.78,9.144 8.24,9.368 8.24,11.454 L10.578,11.454 C10.578,9.984 12.678,9.578 12.678,7.548 C12.678,5.938 11.488,5 9.458,5 C7.274,5 6,6.33 6,8.584 Z M9.36,12.196 C8.52,12.196 7.932,12.784 7.932,13.624 C7.932,14.478 8.52,15.066 9.36,15.066 C10.214,15.066 10.802,14.478 10.802,13.624 C10.802,12.784 10.214,12.196 9.36,12.196 Z" id="ic_help"></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="15px" viewBox="0 0 20 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>ic_card_m</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Main_vars_2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.800000012">
+        <g id="Aeron_full_desctop_var" transform="translate(-373.000000, -555.000000)" fill-rule="nonzero" fill="#FFFFFF">
+            <g id="Group-2" transform="translate(373.000000, 554.000000)">
+                <path d="M2,1 C0.90625,1 0,1.90625 0,3 L0,14 C0,15.09375 0.90625,16 2,16 L18,16 C19.09375,16 20,15.09375 20,14 L20,3 C20,1.90625 19.09375,1 18,1 L2,1 Z M2,3 L18,3 L18,5 L2,5 L2,3 Z M2,8 L18,8 L18,14 L2,14 L2,8 Z" id="ic_card_m"></path>
+            </g>
+        </g>
+    </g>
+</svg>
