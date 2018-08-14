@@ -19,11 +19,15 @@
 
 $.getJSON( 'https://i.aeron.aero/api/news', function( data ) {
   var items = [];
+  var img_class = 'news-item-img-lg';
   $.each( data, function( key, val ) {
+    if(key > 1) {
+        img_class = '';
+    }
     items.push(
         '<div class="col-sm-6 matchHeight">' +
         '<a href="' + val.link + '" target="_blank" class="news-item">' +
-        '<div class="news-item-img ' + val.img_class + '">' +
+        '<div class="news-item-img ' + img_class + '">' +
             '<img src="' + val.img + '" class="img-responsive" alt="">' +
         '</div>' +
         '<h5>' + val.title + '</h5>' +
@@ -41,8 +45,6 @@ $.getJSON( 'https://i.aeron.aero/api/news', function( data ) {
 var lang = new Lang();
 var userLang = navigator.language || navigator.userLanguage;
 var activeLang = 'en';
-
-//console.log(userLang);
 
 lang.dynamic('ar', 'js/langpack/ar.json');
 lang.dynamic('jp', 'js/langpack/jp.json');
