@@ -1613,7 +1613,7 @@ section h3.section-subheading {
     width: 25%;
     padding: 0 22px;
     text-align: center;
-    padding-bottom: 25px;
+    padding-bottom: 28px;
   }
   .timeline-info__item:nth-child(5) {
     content: 5;
@@ -1678,7 +1678,7 @@ section h3.section-subheading {
     width: 20%;
     padding: 0 20px;
     text-align: center;
-    padding-bottom: 25px;
+    padding-bottom: 28px;
   }
   .timeline-info__item:nth-child(6) {
     content: 6;
