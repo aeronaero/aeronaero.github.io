@@ -2309,6 +2309,7 @@ section h3.section-subheading {
 .news-item-img img {
   max-height: 100%;
   width: auto;
+  max-width: 250px;
 }
 
 .news-item h5 {
