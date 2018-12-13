@@ -17,6 +17,17 @@
     })
 }(jQuery);
 
+$.getJSON( 'https://i.aeron.aero/api/links', function( data ) {
+  var html = '';
+  console.log(data);
+  $.each( data, function( key, link ) {
+    html = '<li><a href="' + link.url + '">' +
+        '<img src="' + link.logo + '"  width="100" alt="" hspace="10">' +
+        '</a></li>';
+    $('#links-' +  link.group).append(html);
+  });
+});
+
 $.getJSON( 'https://i.aeron.aero/api/news', function( data ) {
   var items = [];
   var img_class = 'news-item-img-lg';
