@@ -29,7 +29,7 @@ $.getJSON( 'https://i.aeron.aero/api/links', function( data ) {
 
 $.getJSON( 'https://i.aeron.aero/api/news', function( data ) {
   var items = [];
-  var img_class = 'news-item-img-lg';
+  var img_class = '';
   $.each( data, function( key, val ) {
     if(key > 1) {
         img_class = '';
