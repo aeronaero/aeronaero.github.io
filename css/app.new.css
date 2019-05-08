@@ -1826,7 +1826,7 @@ section h3.section-subheading {
 @media (max-width: 767px) {
   .timeline-info__bar {
     left: 17px;
-    top: 14px;
+    top: 12px;
     width: 2px;
     height: calc(100% - 110px);
     background-image: linear-gradient(to bottom, #00ccea, #ff0059);
