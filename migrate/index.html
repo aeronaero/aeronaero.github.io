@@ -1,0 +1,1233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="aeron.aero">
+<title>ARN Token Migration</title>
+<link rel="dns-prefetch" href="//aeron.aero">
+<link rel="dns-prefetch" href="//aerotrips.com">
+<link rel="dns-prefetch" href="//stackpath.bootstrapcdn.com">
+<link rel="dns-prefetch" href="//code.jquery.com">
+<link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+<link rel="dns-prefetch" href="//fonts.googleapis.com">
+<link rel="dns-prefetch" href="//www.googletagmanager.com">
+<link href="https://aeron.aero/img/favicon.png" rel="shortcut icon" type="image/x-icon">
+<link rel="apple-touch-icon" href="https://aeron.aero/img/apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="manifest" href="/manifest.json">
+<style type="text/css">
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: center;
+        align-items: center;
+        padding-top: 20px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+        background: url('/bg.jpg');
+        background-size: cover;
+        font-family: 'Montserrat', sans-serif;
+        -webkit-backface-visibility: hidden; /* add to fix webkit bug jitter */
+        -webkit-transform: perspective(1000px); /* add to fix webkit bug jitter */
+
+      }
+      input[type=number]::-webkit-inner-spin-button, 
+      input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+      }
+      .text-white-80 {
+          color: rgba(255,255,255,.8);
+      }
+
+      a.text-white {
+          text-decoration: underline;
+      }
+      h1 {
+        text-transform: uppercase;
+        font-weight: 700;
+        text-shadow: 0 0 4px rgba(0,0,0,.2);
+        letter-spacing: -.4px;
+        font-size: 2rem;
+      }
+      .landing {
+        width: 100%;
+        max-width: 630px;
+        padding: 15px;
+        margin: auto;
+      }
+      .landing .form-control {
+        position: relative;
+        box-sizing: border-box;
+        height: auto;
+        padding: 10px;
+        font-size: 16px;
+      }
+      .landing .form-control:focus {
+        z-index: 2;
+      }
+
+      .form-transparent{
+          background: transparent !important;
+          border-color: rgba(255,255,255,.8);
+          color: rgba(255,255,255,.8);
+      }
+      .btn.form-transparent  {
+          background: transparent !important;
+          border-color: rgba(255,255,255,.8)  !important;
+          color: rgba(255,255,255,.8)  !important;
+          box-shadow: none !important;
+          
+      }
+      .form-control:focus, .btn:focus{
+        border-color: #fff;
+        box-shadow: none;
+      }
+      .nowrap { white-space: nowrap; }
+      
+      .form-control::-webkit-input-placeholder { color: rgba(255,255,255,.5); }
+      .form-control:-moz-placeholder { color: rgba(255,255,255,.5); }
+      .form-control::-moz-placeholder { color: rgba(255,255,255,.5); }
+      .form-control:-ms-input-placeholder { color: rgba(255,255,255,.5); }
+      .form-control::-ms-input-placeholder { color: rgba(255,255,255,.5); }
+
+      .exchange-app h5 {
+        line-height: 2.4rem;
+      }
+      .exchange-app a.text-white {
+        text-decoration: none !important;
+        border-bottom: 2px rgba(255,255,255,.5) solid;
+      }
+
+      .exchange-app a:hover.text-white {
+        color: rgba(255,255,255,.8)  !important;
+      }
+
+      .exchange-app .dropdown-toggle {
+        border-top-left-radius: .25rem!important;
+        border-bottom-left-radius: .25rem!important;
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+      }
+
+      .exchange-app .table td {
+        border-color: rgba(255,255,255,.3);
+      }
+
+      .border-right-0 {
+        border-top-left-radius: .25rem!important;
+        border-bottom-left-radius: .25rem!important;
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+      }
+
+
+    </style>
+</head>
+<body>
+<div class="landing">
+<div class="exchange-app">
+<div class="d-flex">
+<div class="mr-auto">
+<h1 class="mb-5 text-white">
+<img class="img-responsive" src="https://i.aeron.aero/logo.svg" alt="" height="32">
+</h1>
+</div>
+<div class="ml-auto">
+<a href="https://metamask.io/download.html" target="_blank" rel="noopener noreferrer" id="getMetamask" class="border mx-auto px-3 btn btn-sm bg-transparent border-white text-white font-weight-bold">
+<svg class="mr-2" width="24" height="24" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M28.4229 1.17953L16.7889 9.82025L18.9403 4.72235L28.4229 1.17953Z" fill="#E2761B" stroke="#E2761B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M1.56537 1.17953L13.1058 9.9021L11.0596 4.72235L1.56537 1.17953Z" fill="#E4761B" stroke="#E4761B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M24.237 21.2087L21.1385 25.9558L27.7682 27.7798L29.674 21.3139L24.237 21.2087Z" fill="#E4761B" stroke="#E4761B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M0.337646 21.3139L2.23182 27.7798L8.86144 25.9558L5.76294 21.2087L0.337646 21.3139Z" fill="#E4761B" stroke="#E4761B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M8.48724 13.1877L6.63983 15.9822L13.2227 16.2745L12.9888 9.20056L8.48724 13.1877Z" fill="#E4761B" stroke="#E4761B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M21.5009 13.1877L16.9409 9.11871L16.7889 16.2745L23.36 15.9822L21.5009 13.1877Z" fill="#E4761B" stroke="#E4761B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M8.86145 25.9558L12.8135 24.0266L9.3993 21.3607L8.86145 25.9558Z" fill="#E4761B" stroke="#E4761B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M17.1748 24.0266L21.1385 25.9558L20.589 21.3607L17.1748 24.0266Z" fill="#E4761B" stroke="#E4761B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M21.1385 25.9558L17.1748 24.0266L17.4905 26.6106L17.4554 27.698L21.1385 25.9558Z" fill="#D7C1B3" stroke="#D7C1B3" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M8.86145 25.9558L12.5446 27.698L12.5212 26.6106L12.8135 24.0266L8.86145 25.9558Z" fill="#D7C1B3" stroke="#D7C1B3" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M12.603 19.6536L9.30573 18.6831L11.6325 17.6191L12.603 19.6536Z" fill="#233447" stroke="#233447" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M17.3852 19.6536L18.3557 17.6191L20.6942 18.6831L17.3852 19.6536Z" fill="#233447" stroke="#233447" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M8.86144 25.9558L9.42267 21.2087L5.76294 21.3139L8.86144 25.9558Z" fill="#CD6116" stroke="#CD6116" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M20.5773 21.2087L21.1385 25.9558L24.237 21.3139L20.5773 21.2087Z" fill="#CD6116" stroke="#CD6116" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M23.36 15.9821L16.7889 16.2745L17.3969 19.6536L18.3674 17.6191L20.7058 18.6831L23.36 15.9821Z" fill="#CD6116" stroke="#CD6116" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M9.30498 18.6831L11.6435 17.6191L12.6022 19.6536L13.2219 16.2745L6.6391 15.9821L9.30498 18.6831Z" fill="#CD6116" stroke="#CD6116" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M6.63983 15.9821L9.39925 21.3607L9.30571 18.6831L6.63983 15.9821Z" fill="#E4751F" stroke="#E4751F" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M20.7059 18.6831L20.589 21.3607L23.3601 15.9821L20.7059 18.6831Z" fill="#E4751F" stroke="#E4751F" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M13.2227 16.2745L12.603 19.6536L13.3747 23.6407L13.5501 18.3908L13.2227 16.2745Z" fill="#E4751F" stroke="#E4751F" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M16.7889 16.2745L16.4732 18.3791L16.6135 23.6407L17.3969 19.6536L16.7889 16.2745Z" fill="#E4751F" stroke="#E4751F" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M17.3969 19.6536L16.6135 23.6407L17.1748 24.0266L20.589 21.3607L20.7059 18.6831L17.3969 19.6536Z" fill="#F6851B" stroke="#F6851B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M9.30573 18.6831L9.39927 21.3607L12.8135 24.0266L13.3747 23.6407L12.603 19.6536L9.30573 18.6831Z" fill="#F6851B" stroke="#F6851B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M17.4554 27.698L17.4905 26.6106L17.1982 26.3534H12.7901L12.5212 26.6106L12.5446 27.698L8.86145 25.9558L10.1476 27.0081L12.755 28.8205H17.2332L19.8523 27.0081L21.1385 25.9558L17.4554 27.698Z" fill="#C0AD9E" stroke="#C0AD9E" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M17.1747 24.0266L16.6135 23.6407H13.3747L12.8134 24.0266L12.5211 26.6106L12.79 26.3534H17.1981L17.4904 26.6106L17.1747 24.0266Z" fill="#161616" stroke="#161616" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M28.914 10.3815L29.9079 5.61097L28.4229 1.17953L17.1748 9.52794L21.501 13.1877L27.6162 14.9766L28.9725 13.3981L28.3879 12.9772L29.3233 12.1237L28.5983 11.5624L29.5337 10.8492L28.914 10.3815Z" fill="#763D16" stroke="#763D16" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M0.0921021 5.61097L1.08596 10.3815L0.454568 10.8492L1.38996 11.5624L0.676724 12.1237L1.61212 12.9772L1.0275 13.3981L2.37213 14.9766L8.48728 13.1877L12.8135 9.52794L1.56535 1.17953L0.0921021 5.61097Z" fill="#763D16" stroke="#763D16" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M27.6162 14.9766L21.501 13.1877L23.3601 15.9821L20.589 21.3607L24.237 21.3139H29.674L27.6162 14.9766Z" fill="#F6851B" stroke="#F6851B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M8.48728 13.1877L2.37213 14.9766L0.337646 21.3139H5.76294L9.39929 21.3607L6.63988 15.9821L8.48728 13.1877Z" fill="#F6851B" stroke="#F6851B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M16.7889 16.2745L17.1748 9.52795L18.952 4.72235H11.0596L12.8135 9.52795L13.2227 16.2745L13.363 18.4025L13.3747 23.6407H16.6135L16.6369 18.4025L16.7889 16.2745Z" fill="#F6851B" stroke="#F6851B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" /> </svg>
+Get MetaMask
+</a>
+<button type="button" class="connect-metamask btn mx-auto btn bg-transparent border-white text-white font-weight-bold">
+Connect Wallet
+</button>
+<div class="nav-item dropdown collapse" id="connected-wallet">
+<div style="cursor: pointer;" data-toggle="dropdown" class="nav-item  px-0  text-white nav-link dropdown-toggle" aria-expanded="false">
+<svg id="identicon-image" width="30" height="30" data-jdenticon-value=""></svg>
+<span class="wallet-short">0x1re5..ea63</span>
+</div>
+<div class="dropdown-menu">
+<a href="#" id="exit-wallet" class="dropdown-item">Disconnect</a>
+</div>
+</div>
+</div>
+</div>
+<div class="text-white mt-2 mb-3">
+<h1 class="text-center font-weight-bold">
+Aeron Token Swap
+</h1>
+<h4 class="text-center font-weight-bold mt-4">
+Aeron is performing its token upgrade.
+</h4>
+<h4 class="text-center font-weight-bold mt-4 mb-5">
+Swap your legacy ARN tokens (Ethereum or Binance Chain) to the new <nobr>ARNX (ERC20) token.</nobr> <br>
+<a class="text-white" targer="_blank" href="#">Learn more about the upgrade
+<svg width="20" fill="currentColor" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve">
+<path d="M488.727,0H302.545c-12.853,0-23.273,10.42-23.273,23.273c0,12.853,10.42,23.273,23.273,23.273h129.997L192.999,286.09
+                        c-9.087,9.087-9.087,23.823,0,32.912c4.543,4.543,10.499,6.816,16.455,6.816c5.956,0,11.913-2.273,16.455-6.817L465.455,79.458
+                        v129.997c0,12.853,10.42,23.273,23.273,23.273c12.853,0,23.273-10.42,23.273-23.273V23.273C512,10.42,501.58,0,488.727,0z" />
+<path d="M395.636,232.727c-12.853,0-23.273,10.42-23.273,23.273v209.455H46.545V139.636H256c12.853,0,23.273-10.42,23.273-23.273
+                        S268.853,93.091,256,93.091H23.273C10.42,93.091,0,103.511,0,116.364v372.364C0,501.58,10.42,512,23.273,512h372.364
+                        c12.853,0,23.273-10.42,23.273-23.273V256C418.909,243.147,408.489,232.727,395.636,232.727z" />
+</svg>
+</a>
+</h4>
+</div>
+<div class="row text-white">
+<div class="col-sm-6 mb-4">
+<div class="card border bg-transparent shadow-lg switcher-bnb" id="switcher-bnb" style="cursor: pointer;">
+<div class="card-body">
+<h5 class="card-title font-weight-bold">Migrate<br>
+<a href="https://explorer.binance.org/asset/ARN-71B" rel="noreferrer noopener" targer="_blank" class="text-white">
+ARN-71B
+</a> →
+<a href="https://etherscan.io/token/0x0c37bcf456bc661c14d596683325623076d7e283" rel="noreferrer noopener" targer="_blank" class="text-white">
+ARNX
+</a><br>
+<small>(Binance Chain → Ethereum)</small>
+</h5>
+</div>
+</div>
+</div>
+<div class="col-sm-6 mb-4">
+<div class="card bg-transparent shadow-lg switcher-eth" id="switcher-eth" style="cursor: pointer;">
+<div class="card-body bg-transparent">
+<h5 class="card-title font-weight-bold">Migrate<br>
+<a href="https://etherscan.io/token/0xba5f11b16b155792cf3b2e6880e8706859a8aeb6" rel="noreferrer noopener" targer="_blank" class="text-white">
+ARN
+</a> →
+<a href="https://etherscan.io/token/0x0c37bcf456bc661c14d596683325623076d7e283" rel="noreferrer noopener" targer="_blank" class="text-white">
+ARNX
+</a><br>
+<small>(Ethereum → Ethereum)</small> </h5>
+</div>
+</div>
+</div>
+</div>
+<div class="d-sm-flex justify-content-between">
+<div class="col p-0">
+<label class="text-left text-white-80" for="from_amount">From:</label>
+<div class="input-group input-group-lg mb-4">
+<div>
+<button id="from_token" class="p-3 border-right-0 btn btn-outline-secondary text-white form-transparent dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+<img class="mr-2" src="https://i.aeron.aero/favicon_legacy.png" width="24" alt=""> <span class="active-token-name">ARN (BEP2)</span>
+</button>
+<div class="dropdown-menu">
+<button type="button" class="dropdown-item btn btn-link switcher-bnb" id="direction-bnb">
+<img class="mr-2" src="https://i.aeron.aero/favicon_legacy.png" width="24" alt="">ARN-71B (BEP2)
+</button>
+<button type="button" class="dropdown-item btn btn-link switcher-eth" id="direction-arn">
+<img class="mr-2" src="https://i.aeron.aero/favicon_legacy.png" width="24" alt="">ARN (ERC20)
+</button>
+</div>
+</div>
+<input autocomplete="off" class="border-left-0 rounded-right p-3 form-control text-white text-right form-transparent selectable" id="from_amount" min="0" value="" max="1000000" type="number">
+<small class="w-100 form-text text-white-80 mt-2 collapse" id="balance">Your balance: <span class="balanceFormatted">0</span> ARN</small>
+</div>
+</div>
+<div class="align-self-center text-center d-none d-md-block">
+<button id="direction-switcher" type="button" class="mb-3 btn text-white-80 border-0 btn-primary bg-transparent btn-lg font-weight-bold">→</button>
+</div>
+<div class="col p-0">
+<label class="text-left text-white-80" for="to_amount">To:</label>
+<div class="input-group input-group-lg mb-4">
+<div>
+<button id="to_token" class="p-3 border-right-0 btn btn-outline-secondary text-white form-transparent dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+<img class="mr-2" src="https://i.aeron.aero/apple-touch-icon.png" width="24" alt=""> ARNX
+</button>
+</div>
+<input autocomplete="off" class="border-left-0  p-3 form-control text-white text-right form-transparent selectable" id="to_amount" min="0" max="1000000" value="" type="number">
+<small class="w-100 form-text text-white-80 mt-2" id="quotes"></small>
+</div>
+</div>
+</div>
+<form method="POST" id="initSwap">
+<div id="bc-wallet-info">
+<label class="text-left text-white-80" for="to_address">From Binance Chain address:</label>
+<div class="input-group input-group-lg mb-4">
+<input required class="form-control form-control-lg text-white form-transparent" minlength="42" pattern="^(bnb){1}[A-Za-z0-9]{39}$" id="address_from" name="address_from" value="" placeholder="bnb..." type="text">
+</div>
+<label class="text-left text-white-80" for="to_address">To Ethereum address:</label>
+<div class="input-group input-group-lg mb-4">
+<input required class="form-control form-control-lg text-white form-transparent" minlength="42" pattern="^(0x){1}[0-9a-fA-F]{40}$" id="address_to" name="address_to" value="" placeholder="0x0..." type="text">
+</div>
+</div>
+<div class="row">
+<button type="button" class="connect-metamask pr-5 pl-5 btn mx-auto btn-lg bg-transparent border-white text-white mt-3 mb-5 font-weight-bold">
+<svg class="mr-2" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M28.4229 1.17953L16.7889 9.82025L18.9403 4.72235L28.4229 1.17953Z" fill="#E2761B" stroke="#E2761B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+ <path d="M1.56537 1.17953L13.1058 9.9021L11.0596 4.72235L1.56537 1.17953Z" fill="#E4761B" stroke="#E4761B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M24.237 21.2087L21.1385 25.9558L27.7682 27.7798L29.674 21.3139L24.237 21.2087Z" fill="#E4761B" stroke="#E4761B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M0.337646 21.3139L2.23182 27.7798L8.86144 25.9558L5.76294 21.2087L0.337646 21.3139Z" fill="#E4761B" stroke="#E4761B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M8.48724 13.1877L6.63983 15.9822L13.2227 16.2745L12.9888 9.20056L8.48724 13.1877Z" fill="#E4761B" stroke="#E4761B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M21.5009 13.1877L16.9409 9.11871L16.7889 16.2745L23.36 15.9822L21.5009 13.1877Z" fill="#E4761B" stroke="#E4761B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M8.86145 25.9558L12.8135 24.0266L9.3993 21.3607L8.86145 25.9558Z" fill="#E4761B" stroke="#E4761B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M17.1748 24.0266L21.1385 25.9558L20.589 21.3607L17.1748 24.0266Z" fill="#E4761B" stroke="#E4761B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M21.1385 25.9558L17.1748 24.0266L17.4905 26.6106L17.4554 27.698L21.1385 25.9558Z" fill="#D7C1B3" stroke="#D7C1B3" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M8.86145 25.9558L12.5446 27.698L12.5212 26.6106L12.8135 24.0266L8.86145 25.9558Z" fill="#D7C1B3" stroke="#D7C1B3" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M12.603 19.6536L9.30573 18.6831L11.6325 17.6191L12.603 19.6536Z" fill="#233447" stroke="#233447" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M17.3852 19.6536L18.3557 17.6191L20.6942 18.6831L17.3852 19.6536Z" fill="#233447" stroke="#233447" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M8.86144 25.9558L9.42267 21.2087L5.76294 21.3139L8.86144 25.9558Z" fill="#CD6116" stroke="#CD6116" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M20.5773 21.2087L21.1385 25.9558L24.237 21.3139L20.5773 21.2087Z" fill="#CD6116" stroke="#CD6116" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M23.36 15.9821L16.7889 16.2745L17.3969 19.6536L18.3674 17.6191L20.7058 18.6831L23.36 15.9821Z" fill="#CD6116" stroke="#CD6116" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M9.30498 18.6831L11.6435 17.6191L12.6022 19.6536L13.2219 16.2745L6.6391 15.9821L9.30498 18.6831Z" fill="#CD6116" stroke="#CD6116" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M6.63983 15.9821L9.39925 21.3607L9.30571 18.6831L6.63983 15.9821Z" fill="#E4751F" stroke="#E4751F" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M20.7059 18.6831L20.589 21.3607L23.3601 15.9821L20.7059 18.6831Z" fill="#E4751F" stroke="#E4751F" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M13.2227 16.2745L12.603 19.6536L13.3747 23.6407L13.5501 18.3908L13.2227 16.2745Z" fill="#E4751F" stroke="#E4751F" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M16.7889 16.2745L16.4732 18.3791L16.6135 23.6407L17.3969 19.6536L16.7889 16.2745Z" fill="#E4751F" stroke="#E4751F" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M17.3969 19.6536L16.6135 23.6407L17.1748 24.0266L20.589 21.3607L20.7059 18.6831L17.3969 19.6536Z" fill="#F6851B" stroke="#F6851B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M9.30573 18.6831L9.39927 21.3607L12.8135 24.0266L13.3747 23.6407L12.603 19.6536L9.30573 18.6831Z" fill="#F6851B" stroke="#F6851B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M17.4554 27.698L17.4905 26.6106L17.1982 26.3534H12.7901L12.5212 26.6106L12.5446 27.698L8.86145 25.9558L10.1476 27.0081L12.755 28.8205H17.2332L19.8523 27.0081L21.1385 25.9558L17.4554 27.698Z" fill="#C0AD9E" stroke="#C0AD9E" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M17.1747 24.0266L16.6135 23.6407H13.3747L12.8134 24.0266L12.5211 26.6106L12.79 26.3534H17.1981L17.4904 26.6106L17.1747 24.0266Z" fill="#161616" stroke="#161616" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M28.914 10.3815L29.9079 5.61097L28.4229 1.17953L17.1748 9.52794L21.501 13.1877L27.6162 14.9766L28.9725 13.3981L28.3879 12.9772L29.3233 12.1237L28.5983 11.5624L29.5337 10.8492L28.914 10.3815Z" fill="#763D16" stroke="#763D16" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M0.0921021 5.61097L1.08596 10.3815L0.454568 10.8492L1.38996 11.5624L0.676724 12.1237L1.61212 12.9772L1.0275 13.3981L2.37213 14.9766L8.48728 13.1877L12.8135 9.52794L1.56535 1.17953L0.0921021 5.61097Z" fill="#763D16" stroke="#763D16" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M27.6162 14.9766L21.501 13.1877L23.3601 15.9821L20.589 21.3607L24.237 21.3139H29.674L27.6162 14.9766Z" fill="#F6851B" stroke="#F6851B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M8.48728 13.1877L2.37213 14.9766L0.337646 21.3139H5.76294L9.39929 21.3607L6.63988 15.9821L8.48728 13.1877Z" fill="#F6851B" stroke="#F6851B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" />
+<path d="M16.7889 16.2745L17.1748 9.52795L18.952 4.72235H11.0596L12.8135 9.52795L13.2227 16.2745L13.363 18.4025L13.3747 23.6407H16.6135L16.6369 18.4025L16.7889 16.2745Z" fill="#F6851B" stroke="#F6851B" stroke-width="0.116924" stroke-linecap="round" stroke-linejoin="round" /> </svg>
+Connect Wallet
+</button>
+<button id="form_submit" type="submit" class="pr-5 pl-5 btn mx-auto btn-lg btn-warning mt-3 mb-5 font-weight-bold">SWAP NOW</button>
+</div>
+</form>
+<div id="invoice-block" class="collapse">
+<div class="text-white mb-5 mt-5 text-center">
+<p class="mb-4 font-weight-bold">To initiate a swap you need to transfer legacy ARN tokens to ARN contact address. </p>
+<p class="mb-4 font-weight-bold">New ARNX tokens will be airdropped to the sender address in 1-5 minutes with 1:1 ratio.</p>
+<p class="text-white-80 text-center mt-3">
+Minimum swap amount: <b>100 ARN</b>
+<span class="collapse">Maximum swap amount: <b><span class="balance_arnx">0</span> ARN</b><br></span>
+</p>
+<p class="mt-4 mb-4 font-weight-bold">Please transfer legacy ARN tokens to this address:</p>
+<div class="input-group input-group-lg">
+<input readonly class="pt-3 pb-3 form-control form-control-lg text-center text-white form-transparent selectable" id="transfer_to" value="0xba5f11b16b155792cf3b2e6880e8706859a8aeb6" type="text">
+</div>
+<div class="swap-eth mt-3 mb-4 text-center">
+<div id="qrcode"><svg version="1.1" baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" width="100" height="100">
+<rect shape-rendering="optimizeSpeed" x="0" y="0" width="100" height="100" fill="white" />
+<rect shape-rendering="optimizeSpeed" x="6" y="6" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="9" y="6" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="12" y="6" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="15" y="6" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="18" y="6" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="21" y="6" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="24" y="6" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="30" y="6" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="33" y="6" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="36" y="6" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="39" y="6" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="42" y="6" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="48" y="6" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="63" y="6" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="72" y="6" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="75" y="6" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="78" y="6" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="81" y="6" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="84" y="6" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="87" y="6" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="90" y="6" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="6" y="9" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="24" y="9" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="33" y="9" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="36" y="9" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="39" y="9" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="48" y="9" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="57" y="9" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="60" y="9" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="72" y="9" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="90" y="9" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="6" y="12" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="12" y="12" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="15" y="12" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="18" y="12" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="24" y="12" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="30" y="12" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="36" y="12" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="39" y="12" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="45" y="12" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="54" y="12" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="60" y="12" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="63" y="12" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="72" y="12" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="78" y="12" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="81" y="12" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="84" y="12" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="90" y="12" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="6" y="15" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="12" y="15" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="15" y="15" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="18" y="15" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="24" y="15" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="30" y="15" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="33" y="15" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="42" y="15" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="45" y="15" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="48" y="15" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="54" y="15" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="57" y="15" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="60" y="15" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="66" y="15" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="72" y="15" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="78" y="15" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="81" y="15" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="84" y="15" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="90" y="15" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="6" y="18" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="12" y="18" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="15" y="18" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="18" y="18" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="24" y="18" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="30" y="18" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="33" y="18" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="42" y="18" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="48" y="18" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="51" y="18" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="57" y="18" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="60" y="18" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="63" y="18" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="66" y="18" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="72" y="18" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="78" y="18" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="81" y="18" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="84" y="18" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="90" y="18" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="6" y="21" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="24" y="21" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="33" y="21" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="42" y="21" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="45" y="21" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="48" y="21" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="54" y="21" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="60" y="21" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="63" y="21" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="72" y="21" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="90" y="21" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="6" y="24" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="9" y="24" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="12" y="24" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="15" y="24" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="18" y="24" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="21" y="24" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="24" y="24" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="30" y="24" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="36" y="24" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="42" y="24" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="48" y="24" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="54" y="24" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="60" y="24" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="66" y="24" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="72" y="24" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="75" y="24" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="78" y="24" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="81" y="24" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="84" y="24" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="87" y="24" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="90" y="24" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="33" y="27" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="39" y="27" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="42" y="27" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="57" y="27" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="60" y="27" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="63" y="27" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="66" y="27" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="6" y="30" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="9" y="30" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="12" y="30" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="15" y="30" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="24" y="30" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="30" y="30" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="51" y="30" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="57" y="30" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="63" y="30" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="69" y="30" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="78" y="30" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="81" y="30" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="84" y="30" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="90" y="30" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="6" y="33" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="9" y="33" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="12" y="33" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="15" y="33" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="18" y="33" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="30" y="33" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="33" y="33" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="39" y="33" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="45" y="33" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="48" y="33" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="63" y="33" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="66" y="33" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="69" y="33" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="72" y="33" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="75" y="33" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="78" y="33" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="81" y="33" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="87" y="33" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="90" y="33" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="6" y="36" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="15" y="36" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="18" y="36" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="24" y="36" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="30" y="36" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="39" y="36" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="42" y="36" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="48" y="36" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="60" y="36" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="66" y="36" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="75" y="36" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="78" y="36" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="81" y="36" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="84" y="36" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="87" y="36" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="12" y="39" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="27" y="39" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="45" y="39" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="51" y="39" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="60" y="39" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="66" y="39" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="69" y="39" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="72" y="39" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="90" y="39" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="9" y="42" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="12" y="42" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="24" y="42" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="27" y="42" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="33" y="42" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="42" y="42" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="45" y="42" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="51" y="42" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="54" y="42" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="57" y="42" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="60" y="42" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="66" y="42" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="69" y="42" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="81" y="42" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="84" y="42" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="87" y="42" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="90" y="42" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="9" y="45" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="15" y="45" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="18" y="45" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="36" y="45" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="42" y="45" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="51" y="45" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="60" y="45" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="63" y="45" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="66" y="45" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="69" y="45" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="72" y="45" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="84" y="45" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="90" y="45" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="12" y="48" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="15" y="48" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="18" y="48" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="24" y="48" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="27" y="48" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="33" y="48" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="36" y="48" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="48" y="48" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="63" y="48" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="66" y="48" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="69" y="48" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="72" y="48" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="81" y="48" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="84" y="48" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="87" y="48" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="90" y="48" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="6" y="51" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="12" y="51" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="15" y="51" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="18" y="51" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="30" y="51" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="33" y="51" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="42" y="51" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="48" y="51" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="51" y="51" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="54" y="51" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="81" y="51" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="87" y="51" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="6" y="54" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="9" y="54" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="18" y="54" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="21" y="54" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="24" y="54" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="33" y="54" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="42" y="54" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="45" y="54" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="48" y="54" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="69" y="54" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="78" y="54" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="87" y="54" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="12" y="57" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="15" y="57" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="27" y="57" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="33" y="57" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="39" y="57" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="45" y="57" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="48" y="57" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="51" y="57" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="60" y="57" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="75" y="57" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="87" y="57" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="6" y="60" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="12" y="60" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="18" y="60" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="24" y="60" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="33" y="60" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="36" y="60" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="51" y="60" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="57" y="60" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="60" y="60" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="78" y="60" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="81" y="60" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="12" y="63" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="18" y="63" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="21" y="63" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="27" y="63" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="30" y="63" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="39" y="63" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="48" y="63" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="51" y="63" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="57" y="63" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="63" y="63" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="66" y="63" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="72" y="63" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="75" y="63" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="81" y="63" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="84" y="63" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="87" y="63" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="9" y="66" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="12" y="66" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="15" y="66" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="21" y="66" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="24" y="66" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="27" y="66" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="30" y="66" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="33" y="66" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="57" y="66" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="60" y="66" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="63" y="66" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="66" y="66" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="69" y="66" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="72" y="66" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="75" y="66" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="78" y="66" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="84" y="66" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="87" y="66" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="90" y="66" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="30" y="69" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="33" y="69" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="36" y="69" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="39" y="69" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="48" y="69" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="60" y="69" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="66" y="69" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="78" y="69" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="81" y="69" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="87" y="69" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="90" y="69" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="6" y="72" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="9" y="72" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="12" y="72" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="15" y="72" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="18" y="72" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="21" y="72" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="24" y="72" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="36" y="72" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="39" y="72" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="42" y="72" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="45" y="72" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="63" y="72" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="66" y="72" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="72" y="72" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="78" y="72" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="81" y="72" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="84" y="72" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="87" y="72" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="6" y="75" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="24" y="75" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="45" y="75" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="51" y="75" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="54" y="75" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="60" y="75" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="66" y="75" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="78" y="75" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="87" y="75" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="6" y="78" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="12" y="78" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="15" y="78" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="18" y="78" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="24" y="78" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="33" y="78" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="36" y="78" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="39" y="78" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="45" y="78" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="51" y="78" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="57" y="78" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="66" y="78" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="69" y="78" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="72" y="78" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="75" y="78" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="78" y="78" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="84" y="78" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="87" y="78" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="6" y="81" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="12" y="81" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="15" y="81" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="18" y="81" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="24" y="81" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="30" y="81" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="45" y="81" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="51" y="81" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="54" y="81" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="57" y="81" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="63" y="81" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="66" y="81" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="78" y="81" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="81" y="81" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="87" y="81" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="90" y="81" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="6" y="84" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="12" y="84" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="15" y="84" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="18" y="84" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="24" y="84" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="30" y="84" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="36" y="84" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="42" y="84" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="45" y="84" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="57" y="84" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="60" y="84" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="63" y="84" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="69" y="84" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="90" y="84" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="6" y="87" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="24" y="87" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="30" y="87" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="60" y="87" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="63" y="87" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="66" y="87" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="69" y="87" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="87" y="87" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="6" y="90" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="9" y="90" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="12" y="90" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="15" y="90" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="18" y="90" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="21" y="90" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="24" y="90" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="30" y="90" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="33" y="90" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="36" y="90" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="39" y="90" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="42" y="90" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="45" y="90" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="48" y="90" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="54" y="90" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="66" y="90" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="69" y="90" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="75" y="90" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="78" y="90" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="81" y="90" width="3" height="3" fill="black" />
+<rect shape-rendering="optimizeSpeed" x="87" y="90" width="3" height="3" fill="black" /></svg></div> </div>
+<div class="row">
+<button id="send-arn" type="button" class="sendButton pr-5 pl-5 btn mx-auto btn-lg btn-warning mt-3 mb-4 font-weight-bold">Transfer with MetaMask</button>
+</div>
+<p class="mb-4 mt-4">Alternatively, use our <a class="text-white" href="https://etherscan.io/address/0x9dc336ff6f82180dd24e3dc278799d6a716c60cc#writeContract">swap smart contract</a>.
+<br>Notice you may need to set allowance on ARN smart contract before using swap method.</p>
+<p class="text-white-80 text-center mt-4">
+<small>
+If you believe there has been a mistake, please contact us at
+<a class="text-white" href="/cdn-cgi/l/email-protection#f69f989099b69793849998d897938499c98583949c939582cba5819786d6b7a4b8"><span class="__cf_email__" data-cfemail="f39a9d959cb39296819c9ddd9296819c">[email&#160;protected]</span></a>.
+</small><br>
+<small>
+Always check URL bar of your browser and look for <nobr><a class="text-white" href="https://aeron.aero/migrate">https://aeron.aero/migrate</a>.</nobr>
+<br>
+Support: <a class="text-white" href="https://t.me/aeronaero">https://t.me/aeronaero</a>
+</small>
+</p>
+<div class="row">
+<div class="mx-auto  mb-4 mt-3">
+<a href="#" id="addToMetamask" class=" addMetaButton mt-4 font-weight-bold text-white">Click to import ARNX token details to MetaMask</a>
+</div>
+</div>
+<div class="row">
+<div class="col-md mb-3">
+<a href="https://explorer.binance.org/asset/ARN-71B" class="text-white">Legacy ARN-71B Token<br> Binance Chain (BEP2)</a>
+</div>
+<div class="col-md mb-3">
+<a href="https://etherscan.io/token/0xba5f11b16b155792cf3b2e6880e8706859a8aeb6" class="text-white">Legacy ARN Token<br> Ethereum (ERC20)</a>
+</div>
+<div class="col-md mb-3">
+<a href="https://etherscan.io/token/0x0c37bcf456bc661c14d596683325623076d7e283" class="text-white">New ARNX Token<br> Ethereum (ERC20)</a>
+</div>
+<div class="col-md mb-3">
+<a href="https://etherscan.io/address/0x9dc336ff6f82180dd24e3dc278799d6a716c60cc#writeContract" class="text-white">Swap Smart Contract<br>ARN → ARNX (Ethereum)</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script>
+    (function() {
+      'use strict';
+      window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+          form.addEventListener('submit', function(event) {
+            var form_submit = document.getElementById('form_submit');
+            form_submit.disabled = true;
+            console.log('Processing...')
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              form_submit.disabled = true;
+              console.log('Validation failed!')
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+    </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.11/web3.min.js" integrity="sha512-6lf28FmolQdo4ap44cXw7j+thYEZzS1/kXxDkX1ppO//SHCageBS1HmYdqkkL819WfGtQ+7TE+uXEwsxjJXEKQ==" crossorigin="anonymous"></script>
+<script>
+    // Jdenticon 3.0.0 | jdenticon.com | MIT licensed | (c) 2014-2020 Daniel Mester Pirttijärvi
+(function(y,B){var v=B(y);"undefined"!==typeof module&&"exports"in module?module.exports=v:"function"===typeof define&&define.amd?define([],function(){return v}):y.jdenticon=v})("undefined"!==typeof self?self:this,function(y){function B(a){var b=this.h=Math.min(Number(a.getAttribute("width"))||100,Number(a.getAttribute("height"))||100);for(this.a=a;a.firstChild;)a.removeChild(a.firstChild);a.setAttribute("viewBox","0 0 "+b+" "+b);a.setAttribute("preserveAspectRatio","xMidYMid meet")}function v(a){this.h=
+a;this.a='<svg xmlns="http://www.w3.org/2000/svg" width="'+a+'" height="'+a+'" viewBox="0 0 '+a+" "+a+'">'}function w(a){this.a={};this.g=a;this.h=a.h}function K(){this.i=""}function x(a,b){var c=a.canvas.width,d=a.canvas.height;a.save();b||(b=Math.min(c,d),a.translate((c-b)/2|0,(d-b)/2|0));this.a=a;this.h=b;a.clearRect(0,0,b,b)}function z(a){this.j=a;this.g=ca}function L(a,b,c,d){this.a=a;this.b=b;this.g=c;this.m=d}function E(a,b){this.x=a;this.y=b}function t(a,b,c){return parseInt(a.substr(b,c),
+16)}function V(a){a|=0;return 0>a?"00":16>a?"0"+a.toString(16):256>a?a.toString(16):"ff"}function M(a,b,c){c=0>c?c+6:6<c?c-6:c;return V(255*(1>c?a+(b-a)*c:3>c?b:4>c?a+(b-a)*(4-c):a))}function da(a){if(/^#[0-9a-f]{3,8}$/i.test(a)){if(6>a.length){var b=a[1];var c=a[2],d=a[3],e=a[4]||"";b="#"+b+b+c+c+d+d+e+e}if(7==a.length||8<a.length)b=a;return b}}function W(a){var b=t(a,7,2);if(isNaN(b))b=a;else{var c=t(a,1,2),d=t(a,3,2);a=t(a,5,2);b="rgba("+c+","+d+","+a+","+(b/255).toFixed(2)+")"}return b}function C(a,
+b,c){var d=[.55,.5,.5,.46,.6,.55,.55][6*a+.5|0];c=.5>c?c*d*2:d+(c-.5)*(1-d)*2;0==b?(a=V(255*c),a=a+a+a):(b=.5>=c?c*(b+1):c+b-c*b,c=2*c-b,a=M(c,b,6*a+2)+M(c,b,6*a)+M(c,b,6*a-2));return"#"+a}function ea(a,b){function c(k,m){var n=e[k];n&&1<n.length||(n=m);return function(p){p=n[0]+p*(n[1]-n[0]);return 0>p?0:1<p?1:p}}var d="object"==typeof a&&a||F[N]||O.jdenticon_config||{},e=d.lightness||{},f=d.saturation||{},g="color"in f?f.color:f;f=f.grayscale;var l=d.backColor,h=d.padding;return{C:function(k){var m=
+d.hues,n;m&&0<m.length&&(n=m[0|.999*k*m.length]);return"number"==typeof n?(n/360%1+1)%1:k},s:"number"==typeof g?g:.5,B:"number"==typeof f?f:0,o:c("color",[.4,.8]),A:c("grayscale",[.3,.9]),u:da(l),D:"number"==typeof a?a:"number"==typeof h?h:b}}function P(a){if(a){var b=a.tagName;if(/^svg$/i.test(b))return 1;if(/^canvas$/i.test(b)&&"getContext"in a)return 2}}function fa(a){"undefined"!=typeof MutationObserver&&(new MutationObserver(function(b){for(var c=0;c<b.length;c++){for(var d=b[c],e=d.addedNodes,
+f=0;e&&f<e.length;f++){var g=e[f];if(1==g.nodeType)if(P(g))a(g);else{g=g.querySelectorAll(X);for(var l=0;l<g.length;l++)a(g[l])}}"attributes"==d.type&&P(d.target)&&a(d.target)}})).observe(document.body,{childList:!0,attributes:!0,attributeFilter:[G,Q,"width","height"],subtree:!0})}function ha(a,b,c,d){a%=14;var e,f,g,l,h,k;a?1==a?(g=0|.5*c,l=0|.8*c,b.b(c-g,0,g,l,2)):2==a?(g=0|c/3,b.a(g,g,c-g,c-g)):3==a?(h=.1*c,k=6>c?1:8>c?2:0|.25*c,h=1<h?0|h:.5<h?1:h,b.a(k,k,c-h-k,c-h-k)):4==a?(f=0|.15*c,g=0|.5*c,
+b.f(c-g-f,c-g-f,g)):5==a?(h=.1*c,k=4*h,3<k&&(k|=0),b.a(0,0,c,c),b.c([k,k,c-h,k,k+(c-k-h)/2,c-h],!0)):6==a?b.c([0,0,c,0,c,.7*c,.4*c,.4*c,.7*c,c,0,c]):7==a?b.b(c/2,c/2,c/2,c/2,3):8==a?(b.a(0,0,c,c/2),b.a(0,c/2,c/2,c/2),b.b(c/2,c/2,c/2,c/2,1)):9==a?(h=.14*c,k=4>c?1:6>c?2:0|.35*c,h=8>c?h:0|h,b.a(0,0,c,c),b.a(k,k,c-k-h,c-k-h,!0)):10==a?(h=.12*c,k=3*h,b.a(0,0,c,c),b.f(k,k,c-h-k,!0)):11==a?b.b(c/2,c/2,c/2,c/2,3):12==a?(f=.25*c,b.a(0,0,c,c),b.m(f,f,c-f,c-f,!0)):!d&&(f=.4*c,g=1.2*c,b.f(f,f,g)):(e=.42*c,b.c([0,
+0,c,0,c,c-2*e,c-e,c,0,c]))}function Y(a,b,c){a%=4;var d;a?1==a?b.b(0,c/2,c,c/2,0):2==a?b.m(0,0,c,c):(d=c/6,b.f(d,d,c-2*d)):b.b(0,0,c,c,0)}function ia(a,b){a=b.C(a);return[C(a,b.B,b.A(0)),C(a,b.s,b.o(.5)),C(a,b.B,b.A(1)),C(a,b.s,b.o(1)),C(a,b.s,b.o(0))]}function R(a,b,c){function d(q,D,S,H,T){S=t(b,S,1);H=H?t(b,H,1):0;a.v(n[p[q]]);for(q=0;q<T.length;q++)l.g=new L(k+T[q][0]*h,m+T[q][1]*h,h,H++%4),D(S,l,h,q);a.w()}function e(q){if(0<=q.indexOf(u))for(var D=0;D<q.length;D++)if(0<=p.indexOf(q[D]))return!0}
+c=ea(c,.08);c.u&&a.l(c.u);var f=a.h,g=.5+f*c.D|0;f-=2*g;var l=new z(a),h=0|f/4,k=0|g+f/2-2*h,m=0|g+f/2-2*h;f=t(b,-7)/268435455;var n=ia(f,c),p=[];for(c=0;3>c;c++){var u=t(b,8+c,1)%n.length;if(e([0,4])||e([2,3]))u=1;p.push(u)}d(0,Y,2,3,[[1,0],[2,0],[2,3],[1,3],[0,1],[3,1],[3,2],[0,2]]);d(1,Y,4,5,[[0,0],[3,0],[3,3],[0,3]]);d(2,ha,1,null,[[1,1],[2,1],[2,2],[1,2]]);a.finish()}function I(a){return/^[0-9a-f]{11,}$/i.test(a)&&a}function J(a){var b=0,c=0,d=encodeURI(null==a?"":""+a)+"%80";a=[];for(var e=
+[],f=1732584193,g=4023233417,l=~f,h=~g,k=3285377520,m=[f,g,l,h,k],n=0,p="";b<d.length;c++)a[c>>2]|=("%"==d[b]?parseInt(d.substring(b+1,b+=3),16):d.charCodeAt(b++))<<8*(3-(c&3));d=16*((c+7>>6)+1);for(a[d-1]=8*c-8;n<d;n+=16){for(b=0;80>b;b++){c=(f<<5|f>>>27)+k+(20>b?(g&l^~g&h)+1518500249:40>b?(g^l^h)+1859775393:60>b?(g&l^g&h^l&h)+2400959708:(g^l^h)+3395469782);k=b;if(16>b)var u=a[n+b]|0;else u=e[b-3]^e[b-8]^e[b-14]^e[b-16],u=u<<1|u>>>31;c+=e[k]=u;k=h;h=l;l=g<<30|g>>>2;g=f;f=c}m[0]=f=m[0]+f|0;m[1]=g=
+m[1]+g|0;m[2]=l=m[2]+l|0;m[3]=h=m[3]+h|0;m[4]=k=m[4]+k|0}for(b=0;40>b;b++)p+=(m[b>>3]>>>4*(7-(b&7))&15).toString(16);return p}function Z(a,b,c){for(var d=[],e=2;e<arguments.length;++e)d[e-2]=arguments[e];e=document.createElementNS("http://www.w3.org/2000/svg",b);for(var f=0;f+1<d.length;f+=2)e.setAttribute(d[f],d[f+1]);a.appendChild(e)}function aa(){U&&A(X)}function A(a,b,c){ba(a,b,c,function(d,e){if(e)return 1==e?new w(new B(d)):new x(d.getContext("2d"))})}function ba(a,b,c,d){if("string"===typeof a){if(U){a=
+U(a);for(var e=0;e<a.length;e++)ba(a[e],b,c,d)}}else(b=I(b)||null!=b&&J(b)||I(a.getAttribute(Q))||a.hasAttribute(G)&&J(a.getAttribute(G)))&&(d=d(a,P(a)))&&R(d,b,c)}function ja(a,b){this.each(function(c,d){A(d,a,b)});return this}function ka(){var a=(r.config||O.jdenticon_config||{}).replaceMode;"never"!=a&&(aa(),"observe"==a&&fa(A))}var O=y,N="config",F={},Q="data-jdenticon-hash",G="data-jdenticon-value",X="["+Q+"],["+G+"]",U="undefined"!==typeof document&&document.querySelectorAll.bind(document);
+L.prototype.j=function(a,b,c,d){var e=this.a+this.g,f=this.b+this.g,g=this.m;return 1===g?new E(e-b-(d||0),this.b+a):2===g?new E(e-a-(c||0),f-b-(d||0)):3===g?new E(this.a+b,f-a-(c||0)):new E(this.a+a,this.b+b)};var ca=new L(0,0,0,0);z.prototype.c=function(a,b){var c=b?-2:2,d=this.g,e=[];for(b=b?a.length-2:0;b<a.length&&0<=b;b+=c)e.push(d.j(a[b],a[b+1]));this.j.c(e)};z.prototype.f=function(a,b,c,d){a=this.g.j(a,b,c,c);this.j.f(a,c,d)};z.prototype.a=function(a,b,c,d,e){this.c([a,b,a+c,b,a+c,b+d,a,b+
+d],e)};z.prototype.b=function(a,b,c,d,e){a=[a+c,b,a+c,b+d,a,b+d,a,b];a.splice((e||0)%4*2,2);this.c(a,void 0)};z.prototype.m=function(a,b,c,d,e){this.c([a+c/2,b,a+c,b+d/2,a+c/2,b+d,a,b+d/2],e)};x.prototype.l=function(a){var b=this.a,c=this.h;b.fillStyle=W(a);b.fillRect(0,0,c,c)};x.prototype.v=function(a){var b=this.a;b.fillStyle=W(a);b.beginPath()};x.prototype.w=function(){this.a.fill()};x.prototype.c=function(a){var b=this.a;b.moveTo(a[0].x,a[0].y);for(var c=1;c<a.length;c++)b.lineTo(a[c].x,a[c].y);
+b.closePath()};x.prototype.f=function(a,b,c){var d=this.a;b/=2;d.moveTo(a.x+b,a.y+b);d.arc(a.x+b,a.y+b,b,0,2*Math.PI,c);d.closePath()};x.prototype.finish=function(){this.a.restore()};K.prototype.c=function(a){for(var b="",c=0;c<a.length;c++)b+=(c?"L":"M")+(10*a[c].x+.5|0)/10+" "+(10*a[c].y+.5|0)/10;this.i+=b+"Z"};K.prototype.f=function(a,b,c){var d=(b/2*10+.5|0)/10,e=(10*b+.5|0)/10;c="a"+d+","+d+" 0 1,"+(c?0:1)+" ";this.i+="M"+(10*a.x+.5|0)/10+" "+(10*(a.y+b/2)+.5|0)/10+c+e+",0"+c+-e+",0"};w.prototype.l=
+function(a){a=/^(#......)(..)?/.exec(a);var b=a[2]?t(a[2],0)/255:1;this.g.l(a[1],b)};w.prototype.v=function(a){this.b=this.a[a]||(this.a[a]=new K)};w.prototype.w=function(){};w.prototype.c=function(a){this.b.c(a)};w.prototype.f=function(a,b,c){this.b.f(a,b,c)};w.prototype.finish=function(){var a=this.a,b;for(b in a)a.hasOwnProperty(b)&&this.g.b(b,a[b].i)};v.prototype.l=function(a,b){b&&(this.a+='<rect width="100%" height="100%" fill="'+a+'" opacity="'+b.toFixed(2)+'"/>')};v.prototype.b=function(a,
+b){this.a+='<path fill="'+a+'" d="'+b+'"/>'};v.prototype.toString=function(){return this.a+"</svg>"};B.prototype.l=function(a,b){b&&Z(this.a,"rect","width","100%","height","100%","fill",a,"opacity",b)};B.prototype.b=function(a,b){Z(this.a,"path","fill",a,"d",b)};var r=aa;F=r;r.configure=function(a){arguments.length&&(F[N]=a);return F[N]};r.drawIcon=function(a,b,c,d){if(!a)throw Error("No canvas specified.");R(new x(a,c),I(b)||J(b),d)};r.toSvg=function(a,b,c){b=new v(b);R(new w(b),I(a)||J(a),c);return b.toString()};
+r.update=A;r.updateCanvas=A;r.updateSvg=A;r.version="3.0.0";r.bundle="browser-umd";(y=O.jQuery)&&(y.fn.jdenticon=ja);"function"===typeof setTimeout&&setTimeout(ka,0);return r});
+//# sourceMappingURL=jdenticon.min.js.map
+
+//# sourceMappingURL=jdenticon-3.0.0.min.js.map
+
+</script>
+<script>
+const legacyAbi = [{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_value","type":"uint256"}],"name":"burn","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_value","type":"uint256"}],"name":"unfreeze","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"freezeOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_value","type":"uint256"}],"name":"freeze","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"inputs":[],"payable":false,"type":"constructor"},{"payable":false,"type":"fallback"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Burn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Freeze","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Unfreeze","type":"event"}];
+const legacyAddress = '0xba5f11b16b155792cf3b2e6880e8706859a8aeb6';
+const tokenAddress = '0x0c37bcf456bc661c14d596683325623076d7e283';
+const tokenSymbol = 'ARNX';
+const tokenDecimals = 18;
+const tokenImage = 'https://i.aeron.aero/apple-touch-icon.png';
+
+
+if (typeof ethereum === 'undefined') {
+  console.log('MetaMask is NOT installed!')
+  document.querySelector('#getMetamask').classList.remove('collapse')
+  document.querySelectorAll('.connect-metamask').forEach(el => {
+    el.classList.add('collapse')
+  })
+  
+} else {
+    document.querySelector('#getMetamask').classList.add('collapse')
+    
+    ethereum.on('disconnect', () => {
+        getAccount()
+        console.log('disconnected')
+    })
+
+    ethereum.on('accountsChanged', () => {
+        getAccount()
+        console.log('accountsChanged')
+    })
+}
+
+
+
+
+document.querySelector('#exit-wallet').addEventListener('click', () => {
+    window.location = '/migrate'
+});
+
+
+document.querySelectorAll('.addMetaButton').forEach(el => {
+    el.addEventListener('click', async () => {
+       await addTokenMeta();
+    });
+})
+
+const addTokenMeta = () => {
+
+    ethereum.request(
+    {
+        method: 'wallet_watchAsset',
+        params: {
+        type: 'ERC20',
+        options: {
+            address: tokenAddress,
+            symbol: tokenSymbol,
+            decimals: tokenDecimals,
+            image: tokenImage
+        }
+        },
+        id: Math.round(Math.random() * 100000)
+    }) 
+    .then((result) => {
+        console.log(result)
+    })
+    .catch((error) => {
+        console.log(error)
+    });
+}
+
+const swapAccount = '0xba5f11b16b155792cf3b2e6880e8706859a8aeb6';
+let accounts = [];
+let tokenBalance = 0;
+
+const ethereumButtons = document.querySelectorAll('.connect-metamask');
+
+    ethereumButtons.forEach(el => {
+        el.addEventListener('click', () => {
+            getAccount();
+        });
+    })
+
+const showAccount = document.querySelector('#address_to');
+
+
+async function getAccount() {
+    accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+    const account = accounts[0];
+    if(account)
+    {
+        
+        showAccount.value = account;
+        ethereumButtons.forEach(el => {
+            el.classList.add('collapse');
+        })
+
+        const accountShort = account.substring(0, 5) + '...' + account.substring(account.length-5)
+
+        document.querySelector('#identicon-image').setAttribute('data-jdenticon-value', account);
+        
+        document.querySelector('#exit-wallet').innerHTML = account;
+        document.querySelector('.wallet-short').innerHTML = accountShort;
+        
+        document.querySelector('#connected-wallet').classList.remove('collapse')
+        jdenticon()
+        let web3 = new Web3(Web3.givenProvider);
+
+        //const legacyToken = window.web3.eth.contract(legacyAbi).at(legacyAddress)
+        const legacyToken = new web3.eth.Contract(legacyAbi, legacyAddress);
+        //console.log( legacyToken )
+        const balance = legacyToken.methods.balanceOf(account).call()
+        .then((result) => {
+            console.log('Your balance',result, 'ARN')
+            let balance = result.toString();
+                    
+            balance = Math.round(parseInt(balance, 16)*100)/100;
+            
+            
+            // show balance
+            document.querySelectorAll('.balanceFormatted').forEach(el => {
+                el.innerHTML = addCommas(balance);
+            })
+            if(swapFrom == 'eth'){
+                document.querySelector('#balance').classList.remove('collapse')
+            }
+                
+            
+        })
+        .catch((error) => {console.log(error)})
+        //console.log(balance)
+   /*     console.log(ethereum);
+        ethereum.request({
+            method: 'eth_call',
+            params: [{
+                //from: account,
+                to: legacyAddress, 
+                data: '0x70a0823' +
+                    '000000000000000000000000' + account.substring(2)
+            }] 
+            },
+      
+        ).then((result) => {
+       
+    })
+    .catch((error) => {
+        console.log(error)
+    })
+*/
+    }
+    
+}
+
+const sendEthButton = document.querySelector('.sendButton');
+
+//document.querySelector('#initSwap').addEventListener('submit', (event) => {
+    //event.preventDefault()
+//})
+
+
+sendEthButton.addEventListener('click', async (event) => {
+    event.preventDefault()
+// burn: 0x42966c680000000000000000000000000000000000000000000000000000000000000001
+    await ethereum.request({
+        method: 'eth_sendTransaction',
+        params: [
+            {
+                from: accounts[0],
+                to: legacyAddress,
+                gas: '0x9c40',
+                data: '0xa9059cbb' + 
+                    '000000000000000000000000' + swapAccount.substring(2) + 
+                    paddy(tokenBalance.toString(16), 64),
+            },
+        ],
+    },
+    (err, result) => {
+        if (err) console.error(err);
+        else console.log(result);
+    }
+    );
+});
+
+  var swapFrom = 'bnb';
+
+  const changeSwap = (swap) => {
+      swapFrom = swap;
+
+      if(swap == 'bnb') {
+        $('#switcher-eth').removeClass('border');
+        $('#switcher-bnb').addClass('border');
+        $('#address_from').prop('required', true);
+        $('#address_to').prop('required', true);
+        $('#bc-wallet-info').removeClass('collapse');
+        
+        $('.active-token-name').html('ARN (BEP2)');
+        document.querySelector('#balance').classList.add('collapse')
+
+        $('#send-arn').addClass('collapse');
+        $('#invoice-block').addClass('collapse');
+        
+        $('#form_submit').removeClass('collapse');
+      }
+      if(swap == 'eth') {
+        $('#switcher-bnb').removeClass('border');
+        $('#switcher-eth').addClass('border');
+        $('#address_to').prop('required', false);
+        $('#address_from').prop('required', false);
+        $('#bc-wallet-info').addClass('collapse');
+        $('.active-token-name').html('ARN (ERC20)');
+        document.querySelector('#balance').classList.remove('collapse')
+        $('#send-arn').removeClass('collapse');
+        $('#form_submit').removeClass('collapse');
+
+
+
+      }
+  }
+
+  $(".selectable").click(function () {
+        $(this).select();
+  })
+
+  $('#form_submit').click(function(event) {
+        event.preventDefault()
+        if(swapFrom == 'eth') {
+            $('#invoice-block').removeClass('collapse');
+            $(this).addClass('collapse');
+            $([document.documentElement, document.body]).animate({
+                scrollTop: $("#invoice-block").offset().top
+            }, 1000);
+        } 
+        if(swapFrom == 'bnb') {
+            const addressFrom = document.querySelector('#address_from').value;
+            const addressTo = document.querySelector('#address_to').value;
+            const api = 'https://i.aeron.aero/api/migrate'
+            fetch(api, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    },
+                body: JSON.stringify({address_in: addressFrom, address_out: addressTo})
+                })
+                .then(r => r.json())
+                .then(data => {
+                    console.log(data)
+                    if(data.id) {
+                        //document.cookie = "swap=" + data.id;
+                        window.location = '/binance/' + data.id;
+                        //window.location = 'https://i.aeron.aero/binance/' + data.id;
+                        
+                        //document.querySelector('#transfer_to').value = data.address_in;
+                        //document.querySelector('#invoice-block').classList.remove('collapse')
+                        //data.address_out;
+                    }
+                })
+                .catch(e => console.log("Error", e))
+        }
+        
+    })
+
+document.querySelectorAll('.switcher-bnb').forEach(el => {
+    el.addEventListener('click', () => {
+        changeSwap('bnb')
+    });
+})
+
+document.querySelectorAll('.switcher-eth').forEach(el => {
+    el.addEventListener('click', () => {
+        changeSwap('eth')
+    });
+})
+
+
+
+
+    
+   // check_status();
+    
+    
+    let status_quotes;
+    var last_check = 0;
+    var from_token = 'arn';
+    var to_token = 'arnx';
+    const tx_url = 'http://etherscan.io/tx/';
+    const address_url = 'http://etherscan.io/address/';
+    const icon_images = {
+            arn: '<img class="mr-2" src="https://i.aeron.aero/favicon_legacy.png" width="24" alt=""> ARN',
+            arnx: '<img class="mr-2" src="https://i.aeron.aero/favicon_legacy.png" width="24" alt=""> ARNX',
+        };
+
+
+
+    $("#from_amount, #to_amount").bind('change paste keyup',function(){
+        set_quotes(this.id);
+    })
+
+
+    set_quotes()
+
+    function set_quotes(id = 'from_amount') {
+        
+  //      if(!status_quotes) {
+    //        return '';
+      //  }
+        var append_html = '';
+
+        var from_amount = parseFloat($('#from_amount').val());
+        var to_amount = parseFloat($('#to_amount').val());
+        //var usd_amount = status_quotes.arn_usd;
+
+        if(!from_amount || from_amount < 0) {
+            from_amount = 0;
+        }
+
+        if(!to_amount || to_amount < 0) {
+            to_amount = 0;
+        }
+
+        if(id == 'from_amount') {
+            to_amount = Math.round(from_amount * 100)/100
+        }
+
+        if(id == 'to_amount') {
+            from_amount =  Math.round(to_amount * 100)/100;
+        } 
+
+        if(!from_amount) {
+            from_amount = '';
+        }
+
+        if(!to_amount) {
+            to_amount = '';
+        }
+
+        $('#from_amount').val(from_amount);
+        $('#to_amount').val(to_amount);
+
+        if(!from_amount || from_amount < 1) {
+            from_amount = 1;
+        }
+
+        if(!to_amount || to_amount < 1) {
+            to_amount = 1;
+        }
+        //usd_amount = Math.round(from_amount * status_quotes.arn_usd*100)/100;
+        
+        append_html = addCommas(from_amount) + ' ' + from_token.toUpperCase() + ' = ' + addCommas(to_amount) + ' '+ to_token.toUpperCase() //+' ~ ' + addCommas(usd_amount) + ' USD';
+        
+
+
+        $('#quotes').html(append_html);
+    }
+
+
+
+
+    function addCommas(nStr)
+    {
+        nStr += '';
+        var x = nStr.split('.');
+        var x1 = x[0];
+        var x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+            x1 = x1.replace(rgx, '$1' + ',' + '$2');
+        }
+        return x1 + x2;
+    }
+
+    function paddy(num, padlen, padchar) {
+        var pad_char = typeof padchar !== 'undefined' ? padchar : '0';
+        var pad = new Array(1 + padlen).join(pad_char);
+        return (pad + num).slice(-pad.length);
+    }
+</script>
+</body>
+</html>
