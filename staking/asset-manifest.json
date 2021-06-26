@@ -2,7 +2,7 @@
   "files": {
     "static/js/0.4c9dfa8d.chunk.js": "/staking/static/js/0.4c9dfa8d.chunk.js",
     "main.css": "/staking/static/css/main.e8dea50c.chunk.css",
-    "main.js": "/staking/static/js/main.8adc7447.chunk.js",
+    "main.js": "/staking/static/js/main.e381c76f.chunk.js",
     "runtime-main.js": "/staking/static/js/runtime-main.c3686335.js",
     "static/js/3.e2448ac2.chunk.js": "/staking/static/js/3.e2448ac2.chunk.js",
     "static/js/4.79000d26.chunk.js": "/staking/static/js/4.79000d26.chunk.js",
@@ -13,7 +13,7 @@
     "static/js/9.c36af440.chunk.js": "/staking/static/js/9.c36af440.chunk.js",
     "static/js/10.d51b09d1.chunk.js": "/staking/static/js/10.d51b09d1.chunk.js",
     "index.html": "/staking/index.html",
-    "precache-manifest.693e13c551002510a5a899362516da56.js": "/staking/precache-manifest.693e13c551002510a5a899362516da56.js",
+    "precache-manifest.b6c92a53e1d8210ea98be86844955336.js": "/staking/precache-manifest.b6c92a53e1d8210ea98be86844955336.js",
     "service-worker.js": "/staking/service-worker.js",
     "static/js/3.e2448ac2.chunk.js.LICENSE.txt": "/staking/static/js/3.e2448ac2.chunk.js.LICENSE.txt",
     "static/js/5.e31eb136.chunk.js.LICENSE.txt": "/staking/static/js/5.e31eb136.chunk.js.LICENSE.txt",
@@ -33,6 +33,6 @@
     "static/js/runtime-main.c3686335.js",
     "static/js/3.e2448ac2.chunk.js",
     "static/css/main.e8dea50c.chunk.css",
-    "static/js/main.8adc7447.chunk.js"
+    "static/js/main.e381c76f.chunk.js"
   ]
 }
