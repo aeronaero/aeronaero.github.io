@@ -3,7 +3,7 @@
     "static/js/0.c135e60d.chunk.js": "/staking/static/js/0.c135e60d.chunk.js",
     "static/js/1.57a6013d.chunk.js": "/staking/static/js/1.57a6013d.chunk.js",
     "main.css": "/staking/static/css/main.4cd7beb8.chunk.css",
-    "main.js": "/staking/static/js/main.1d170069.chunk.js",
+    "main.js": "/staking/static/js/main.1036e454.chunk.js",
     "runtime-main.js": "/staking/static/js/runtime-main.6ae7091b.js",
     "static/js/4.b031b6b6.chunk.js": "/staking/static/js/4.b031b6b6.chunk.js",
     "static/js/5.555da54a.chunk.js": "/staking/static/js/5.555da54a.chunk.js",
@@ -25,7 +25,7 @@
     "static/js/21.538ea94c.chunk.js": "/staking/static/js/21.538ea94c.chunk.js",
     "static/js/22.5db9e678.chunk.js": "/staking/static/js/22.5db9e678.chunk.js",
     "index.html": "/staking/index.html",
-    "precache-manifest.249a625fbabe68c1bbd9a19e70a6c349.js": "/staking/precache-manifest.249a625fbabe68c1bbd9a19e70a6c349.js",
+    "precache-manifest.360f98cdc172d75728437d766a8cf81e.js": "/staking/precache-manifest.360f98cdc172d75728437d766a8cf81e.js",
     "service-worker.js": "/staking/service-worker.js",
     "static/js/11.58b7cb6e.chunk.js.LICENSE.txt": "/staking/static/js/11.58b7cb6e.chunk.js.LICENSE.txt",
     "static/js/4.b031b6b6.chunk.js.LICENSE.txt": "/staking/static/js/4.b031b6b6.chunk.js.LICENSE.txt",
@@ -52,6 +52,6 @@
     "static/js/runtime-main.6ae7091b.js",
     "static/js/4.b031b6b6.chunk.js",
     "static/css/main.4cd7beb8.chunk.css",
-    "static/js/main.1d170069.chunk.js"
+    "static/js/main.1036e454.chunk.js"
   ]
 }
